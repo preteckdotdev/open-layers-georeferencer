@@ -24,7 +24,7 @@ function generateMapImageDivs(PARENT: HTMLBodyElement) {
 
 function generateDialog(PARENT: HTMLBodyElement) {
   const DIALOG_CONTAINER = document.createElement("div");
-  DIALOG_CONTAINER.id = "dialog-container";
+  DIALOG_CONTAINER.id = "dialog";
   DIALOG_CONTAINER.className =
     "fixed w-full h-full left-0 right-0 top-0 bottom-0 bg-black bg-opacity-50";
   PARENT.appendChild(DIALOG_CONTAINER);
@@ -61,14 +61,22 @@ function generateLoadingSpinner(PARENT: HTMLBodyElement) {
   LOADING_SPINNER.id = "loading";
   LOADING_SPINNER.className =
     "fixed w-full h-full left-0 right-0 top-0 bottom-0 bg-black bg-opacity-50 hidden";
-  LOADING_SPINNER.innerHTML = `    <div class="inner">
+  PARENT.appendChild(LOADING_SPINNER);
+  generateLoadingDialog(LOADING_SPINNER);
+}
+
+function generateLoadingDialog(PARENT: HTMLDivElement) {
+  const LOADING_DIALOG = document.createElement("div");
+  LOADING_DIALOG.id = "loading-dialog";
+  LOADING_DIALOG.className =
+    "absolute left-1/2 top-20 transform -translate-x-1/2 w-500 bg-white border-3 border-blue-500 rounded-5 p-4 overflow-hidden transition-all duration-500";
+  LOADING_DIALOG.innerHTML = `
     <h1>
       <i class="fa fa-2x fa-spinner fa-pulse" style="vertical-align:middle; margin-right:0.5em;"></i>
-      Loading...
+      Loading the below image...
       <img class="preview" />
-    </h1>
-  </div>`;
-  PARENT.appendChild(LOADING_SPINNER);
+    </h1>`;
+  PARENT.appendChild(LOADING_DIALOG);
 }
 
 function generateExportDialog(PARENT: HTMLBodyElement) {
