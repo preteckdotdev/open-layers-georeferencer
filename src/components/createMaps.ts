@@ -1,7 +1,7 @@
 //Import external modules
 import Map from "ol/Map";
 import View from "ol/View";
-import * as Control from "ol/control";
+import { MousePosition } from "ol/control";
 import { defaults as defaultControls } from "ol/control";
 import LayerSwitcher from "ol-ext/control/LayerSwitcher";
 import { createStringXY } from "ol/coordinate";
@@ -10,18 +10,19 @@ import { Projection } from "ol/proj";
 import { defaults } from "ol/interaction/defaults";
 
 //Import local modules
+import { referenceMapLayers } from "../config/mapConfig";
 
 //Global Variables
 let referenceMap = {} as Map;
-let imageMap = {};
+let imageMap = {} as Map;
 let mapSynchro = true;
 
 export default function createMaps() {
   const REF_MAP_DIV = document.getElementById("map") as HTMLElement;
   const IMAGE_MAP_DIV = document.getElementById("img") as HTMLElement;
 
-  createReferenceMap(REF_MAP_DIV);
   createImageMap(IMAGE_MAP_DIV);
+  createReferenceMap(REF_MAP_DIV);
 }
 
 function createReferenceMap(REF_MAP_DIV: HTMLElement) {
@@ -32,20 +33,22 @@ function createReferenceMap(REF_MAP_DIV: HTMLElement) {
       center: [259694, 6251211],
     }),
     controls: defaultControls().extend([new LayerSwitcher()]),
-    layers: [],
+    layers: referenceMapLayers,
   });
+
+  const imageMap = {} as Map; // Add type declaration for imageMap
 
   referenceMap.getView().on("change:center", function () {
     if (mapSynchro) return;
     mapSynchro = true;
-    let centerPoint = referenceMap.getView().getCenter(); // This needs to be converted.
+    let centerPoint = referenceMap.getView().getCenter();
     if (centerPoint) {
-      //   imageMap.getView().setCenter(centerPoint); //This needs creating.
+      imageMap.getView().setCenter(centerPoint);
     }
     mapSynchro = false;
   });
 
-  const MOUSE_POSITION_CONTROL = new Control.MousePosition({
+  const MOUSE_POSITION_CONTROL = new MousePosition({
     coordinateFormat: createStringXY(4),
   });
   referenceMap.addControl(MOUSE_POSITION_CONTROL);
