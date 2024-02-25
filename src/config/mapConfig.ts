@@ -2,7 +2,7 @@
 import { OSM } from "ol/source";
 
 //Import local modules
-import { ExtendedLayerGroup } from "./newTypes";
+import { ExtendedLayerGroup } from "./newClasses";
 import TileLayer from "ol/layer/Tile";
 
 const referenceMapBaseMapGroup = new ExtendedLayerGroup({

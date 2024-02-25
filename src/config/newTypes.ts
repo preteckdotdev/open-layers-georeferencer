@@ -1,14 +1,33 @@
-//Import external modules
-import LayerGroup from "ol/layer/Group";
-
-//Import local modules
-
-class ExtendedLayerGroup extends LayerGroup {
-  name?: string;
-  constructor(options: any) {
-    super(options);
-    this.name = options.name;
-  }
+interface Coordinate {
+  x: number;
+  y: number;
 }
 
-export { ExtendedLayerGroup };
+interface HelmertOptions {
+  similarity?: boolean;
+}
+
+interface HelmertTransform {
+  setControlPoints(xy: Coordinate[], XY: Coordinate[]): boolean;
+  getRotation(): number;
+  getScale(): Coordinate;
+  getTranslation(): Coordinate;
+  transform(xy: Coordinate): Coordinate;
+  revers(xy: Coordinate): Coordinate;
+}
+
+interface HelmertClass {
+  new (options?: HelmertOptions): HelmertTransform;
+}
+
+interface ImageTransform {
+  Helmert: HelmertClass;
+}
+
+export type {
+  Coordinate,
+  HelmertOptions,
+  HelmertTransform,
+  HelmertClass,
+  ImageTransform,
+};

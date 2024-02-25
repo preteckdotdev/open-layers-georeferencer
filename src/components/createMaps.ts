@@ -6,11 +6,12 @@ import { defaults as defaultControls } from "ol/control";
 import LayerSwitcher from "ol-ext/control/LayerSwitcher";
 import { createStringXY } from "ol/coordinate";
 import { altKeyOnly } from "ol/events/condition";
-import { Projection } from "ol/proj";
 import { defaults } from "ol/interaction/defaults";
 
 //Import local modules
 import { referenceMapLayers } from "../config/mapConfig";
+import pixelProjection from "../utils/pixelProjection";
+import { deleteControlPoint } from "./georeferenceImage";
 
 //Global Variables
 let referenceMap = {} as Map;
@@ -60,7 +61,7 @@ function createReferenceMap(REF_MAP_DIV: HTMLElement) {
       for (var i = 0, feature; (feature = features[i]); i++) {
         feature = feature.get("features")[0];
         if (feature && feature.get("id")) {
-          // delControlPoint(feature.get("id"));
+          deleteControlPoint(feature.get("id"));
           break;
         }
       }
@@ -72,7 +73,7 @@ function createImageMap(IMAGE_MAP_DIV: HTMLElement) {
   imageMap = new Map({
     target: IMAGE_MAP_DIV,
     view: new View({
-      zoom: 7,
+      zoom: 12,
       center: [0, 0],
       projection: pixelProjection,
     }),
@@ -85,8 +86,4 @@ function createImageMap(IMAGE_MAP_DIV: HTMLElement) {
   });
 }
 
-const pixelProjection = new Projection({
-  code: "pixel",
-  units: "pixels",
-  extent: [-100000, -100000, 100000, 100000],
-});
+export { referenceMap, imageMap };

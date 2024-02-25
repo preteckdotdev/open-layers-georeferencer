@@ -1,6 +1,7 @@
 //Import external modules
 
 //Import local modules
+import startGeoReferencing from "./georeferenceImage";
 
 export default function watchForDataLoad() {
   console.log("Watching for data load.");
@@ -33,9 +34,10 @@ export default function watchForDataLoad() {
 
 function loadData(IMAGE: File, IMAGE_URL: string) {
   console.log("Loading data.");
-  let NAME = IMAGE.name.split(`\\`).pop();
-  if (NAME) {
-    NAME = NAME.substring(0, NAME.lastIndexOf(".")) || NAME;
+  let IMAGE_NAME: string = IMAGE.name.split(`\\`).pop() as string;
+  if (IMAGE_NAME) {
+    IMAGE_NAME =
+      IMAGE_NAME.substring(0, IMAGE_NAME.lastIndexOf(".")) || IMAGE_NAME;
   }
   const DIALOG = document.getElementById("dialog") as HTMLDivElement;
   DIALOG.classList.add("hidden");
@@ -45,4 +47,6 @@ function loadData(IMAGE: File, IMAGE_URL: string) {
     "#loading img"
   ) as HTMLImageElement;
   LOADING_IMG.src = IMAGE_URL;
+
+  startGeoReferencing(IMAGE_URL, IMAGE_NAME);
 }
